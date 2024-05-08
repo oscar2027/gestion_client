@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app_cliente:
+    build: gestioncliente
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:mysql://cliente_gest:3306/gestion_clientes_spring_boot?createDatabaseIfNotExit-true&serverTimezone-UTC
+      DB_USER_NAME: root
+      DB_PASSWORD: 1234
+    restart: always
+    depends_on:
+      cliente_gest:
+          condition: service_healthy
+  cliente_gest:
+      image: mysql:8.0.34
+      ports:
+        - "3307:3306"
+      environment:
+        MYSQL_ROOT_PASSWORD: 1234
+        MYSQL_PASSWORD: 1234
+        MYSQL_DATABASE: gestion_clientes_spring_boot
+      restart: always
+      healthcheck:
+        test: ["CMD","mysqladmin","ping","-h","localhost"]
+        timeout: 10s
+        retries: 10

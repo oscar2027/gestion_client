@@ -10,7 +10,8 @@ services:
       DB_PASSWORD: 1234
     restart: always
     depends_on:
-      - cliente_gest:         
+      cliente_gest:
+          condition: service_healthy         
   cliente_gest:
       image: mysql:8.0.34
       ports:
